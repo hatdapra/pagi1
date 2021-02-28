@@ -1,0 +1,51 @@
+<mat-card class="matcard mat-elevation-z3">
+  <mat-form-field class="examplediv" style="margin-right: 1rem">
+    <mat-label>Fields</mat-label>
+    <mat-select [(ngModel)]="currentFilterKey">
+      <mat-option [value]="''">all field</mat-option>
+      <mat-option *ngFor="let col of selectFields" [value]="col.fieldName">
+        {{ col.displayName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field style="margin-right: 1rem">
+    <mat-label>Filter</mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="Add meg a szöveget"
+      (keyup)="applyFilter($event)"
+    />
+  </mat-form-field>
+</mat-card>
+
+<app-insert-data
+  [selectFields]="selectFields"
+  [inputName]="inputName">
+</app-insert-data>
+
+<div class="mat-elevation-z8 examplediv">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container
+      *ngFor="let col of displayedColumns2"
+      [matColumnDef]="col.fieldName"
+    >
+      <th mat-header-cell *matHeaderCellDef>{{ col.displayName }}</th>
+      <td mat-cell *matCellDef="let element">
+        <div *ngIf="col.fieldName !== 'actions'; else actionBlock">
+          {{ element[col.fieldName] }}
+        </div>
+        <ng-template #actionBlock>
+          <app-btn-grp [btnGrp]="btnGrp"></app-btn-grp>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator
+    [pageSizeOptions]="[3, 5, 10, 20]"
+    showFirstLastButtons
+  ></mat-paginator>
+</div>

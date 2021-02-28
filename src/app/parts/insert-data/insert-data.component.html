@@ -1,0 +1,35 @@
+<mat-card class="matcard mat-elevation-z3">
+  <form>
+  <ng-container *ngFor="let col of selectFields; let i = index">
+    
+    <ng-container *ngIf="col.inputType == 'text'">
+      
+      <mat-form-field style="margin-right: 1rem">
+        <mat-label> {{ col.displayName }} </mat-label>
+        <input 
+          [attr.tag]="col.fieldName"
+          type="text" 
+          matInput 
+          [formControl]="textFormControls[i]"
+          [errorStateMatcher]="matcher"
+          placeholder="{{col.fieldName}}" 
+          [name]="inputName"
+          />
+        <!-- <mat-hint>A mező kitöltése kötelező!</mat-hint> -->
+        <mat-error *ngIf="textFormControls[i].hasError('required')">
+          A mező kitöltése <strong>kötelező</strong>!
+        </mat-error>
+      </mat-form-field>
+    
+    </ng-container>
+  
+  </ng-container>
+  <button 
+    type="submit"
+    mat-raised-button 
+    class="addBtn"
+    (click)="onClickBtn($event)">
+    <mat-icon>add</mat-icon>
+  </button>
+</form>
+</mat-card>
